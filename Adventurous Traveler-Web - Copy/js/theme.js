@@ -25,16 +25,17 @@ function updateThemeIcon(theme) {
 
 // Initialize theme
 document.addEventListener('DOMContentLoaded', () => {
-    // Don't show theme toggle on welcome/story pages (they use a fixed look)
-    const path = window.location.pathname || window.location.href;
-    if (path.includes('welcome-name.html') || path.includes('story.html')) {
-        // Still apply saved theme to other pages, but do not render the toggle here
+    const path = window.location.pathname;
+    const currentPage = path.split('/').pop();
+    
+    // Don't show theme toggle on welcome/story pages
+    if (currentPage === 'welcome-name.html' || currentPage === 'story.html') {
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
         return;
     }
 
-    // Create and add theme toggle button
+    // Create and add theme toggle button for other pages
     const toggle = document.createElement('button');
     toggle.className = 'theme-toggle';
     toggle.setAttribute('aria-label', 'Toggle theme');

@@ -4,19 +4,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const nameInput = document.getElementById('player-name');
     const beginButton = document.getElementById('begin-btn');
     const storySection = document.getElementById('story-section');
-    const storyText = document.getElementById('story-text');
-    const continueButton = document.getElementById('continue-btn');
     
     // Auto transition from welcome to name section after 3 seconds
     setTimeout(() => {
         welcomeSection.classList.remove('active');
         setTimeout(() => {
             nameSection.classList.add('active');
-            nameInput.focus();
+            if (nameInput) nameInput.focus();
         }, 800);
     }, 3000);
     
-    // Handle name submission: stay on same page and show story section
+    // Handle name submission
     if (beginButton) {
         beginButton.addEventListener('click', function() {
             const playerName = nameInput.value.trim();
@@ -25,12 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Save name to localStorage
                 localStorage.setItem('playerName', playerName);
 
-                // Transition: hide name section, show story section
+                // Transition to story section
                 nameSection.classList.remove('active');
                 setTimeout(() => {
                     if (storySection) {
                         storySection.classList.add('active');
-                        // Start story typing using local story logic below
                         startStoryTyping(playerName);
                     }
                 }, 500);
@@ -39,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 nameInput.style.animation = 'shake 0.5s';
                 nameInput.focus();
 
-                // Remove animation after it completes
                 setTimeout(() => {
                     nameInput.style.animation = '';
                 }, 500);
@@ -68,7 +64,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Story typing logic (in-page) -------------------------------------------------
+// Story typing logic
 function startStoryTyping(playerName) {
     const storyTextEl = document.getElementById('story-text');
     const continueBtn = document.getElementById('continue-btn');
@@ -93,7 +89,6 @@ function startStoryTyping(playerName) {
             const currentText = storyLines[currentLine];
 
             if (currentChar < currentText.length) {
-                // Build the entire story up to current point
                 let displayText = '';
                 for (let i = 0; i < currentLine; i++) {
                     displayText += storyLines[i] + '<br>';
@@ -104,14 +99,12 @@ function startStoryTyping(playerName) {
                 currentChar++;
                 setTimeout(typeWriter, typingSpeed);
             } else {
-                // Move to next line
                 currentLine++;
                 currentChar = 0;
 
                 if (currentLine < storyLines.length) {
                     setTimeout(typeWriter, lineDelay);
                 } else {
-                    // Story complete
                     storyTextEl.innerHTML = storyLines.join('<br>');
                     if (continueBtn) continueBtn.classList.add('show');
                 }
@@ -119,15 +112,14 @@ function startStoryTyping(playerName) {
         }
     }
 
-    // Start typing animation after a short delay
     setTimeout(typeWriter, 600);
 
-    // Continue button behavior
+    // Continue button - redirect to game.html
     if (continueBtn) {
         continueBtn.addEventListener('click', function() {
             document.body.style.opacity = '0';
             setTimeout(() => {
-                alert('Your adventure continues! This would lead to the main game.');
+                window.location.href = 'game.html';
             }, 500);
         });
     }
