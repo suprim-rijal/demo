@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventurous Traveler - Home</title>
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pages/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-plane"></i>
+                <span>Adventurous Traveler</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="resources.html" class="nav-link">Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Adventurous Traveler</h1>
+                <p class="tagline">Explore the skies. Discover hidden secrets.</p>
+                <p class="description">Embark on an epic journey across mysterious lands and become the legendary traveler you were destined to be.</p>
+                <button id="play-btn" class="cta-button">
+                    <i class="fas fa-play"></i>
+                    Start Journey
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+        document.getElementById('play-btn').addEventListener('click', function() {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = 'welcome-name.html';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
