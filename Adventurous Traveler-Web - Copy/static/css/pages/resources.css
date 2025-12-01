@@ -1,0 +1,142 @@
+.resources-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8rem 2rem 2rem;
+    background: var(--bg-primary);
+    min-height: 100vh;
+}
+
+.resources-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.resources-header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.resources-header p {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.resource-section {
+    margin-bottom: 3rem;
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 5px 20px var(--shadow-color);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.resource-section:hover {
+    border-color: var(--text-primary);
+}
+
+.resource-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    color: var(--accent-primary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.instructions {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.instruction-step {
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    border-left: 4px solid var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.instruction-step:hover {
+    transform: translateX(5px);
+    box-shadow: 0 6px 18px var(--shadow-color);
+}
+
+.instruction-step h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.instruction-step p {
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.resource-links,
+.video-links {
+    display: grid;
+    gap: 1rem;
+}
+
+.resource-link,
+.video-link {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.resource-link:hover,
+.video-link:hover {
+    background: var(--bg-secondary);
+    border-color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.resource-link i,
+.video-link i {
+    font-size: 2rem;
+    color: var(--text-primary);
+    width: 40px;
+}
+
+.link-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.link-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .resources-container {
+        padding: 6rem 1rem 1rem;
+    }
+    
+    .resources-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .resource-section {
+        padding: 1.5rem;
+    }
+}

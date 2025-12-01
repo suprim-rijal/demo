@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventurous Traveler - Main Game</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+
+    <!-- Main Game Screen -->
+
+    <div id="game-screen" class="screen active">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <h1>Adventurous Traveler</h1>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-label">Money</div>
+                    <div class="stat-value" id="money-display">$10,000</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Fuel</div>
+                    <div class="stat-value" id="fuel-display">2,500 km</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Location</div>
+                    <div class="stat-value" id="location-display">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Artifacts</div>
+                    <div class="stat-value" id="artifacts-display">0/10</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Flights</div>
+                    <div class="stat-value" id="flights-display">0/20</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Game -->
+        <div class="game-container">
+            <!-- Map -->
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-overlay">
+                    <div class="current-artifact-info">
+                        <h3>Current Target</h3>
+                        <div id="current-artifact-name">Loading...</div>
+                        <div id="current-artifact-location">Delivery: Unknown</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Game Controls</h2>
+                </div>
+                
+                <div class="sidebar-content">
+                    <div class="action-grid">
+                        <button class="action-btn" onclick="openModal('shop-modal')">
+                            <i class="fas fa-store"></i>
+                            <span>Shop</span>
+                        </button>
+                        <button class="action-btn" onclick="openModal('status-modal')">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Status</span>
+                        </button>
+                        <button class="action-btn" onclick="openModal('artifacts-modal')">
+                            <i class="fas fa-gem"></i>
+                            <span>Artifacts</span>
+                        </button>
+                        <button class="action-btn" onclick="refreshGame()">
+                            <i class="fas fa-sync"></i>
+                            <span>Refresh</span>
+                        </button>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Recent Events</h3>
+                        <div class="events-list" id="events-list">
+                            <div class="event-item">
+                                <div class="event-time">Starting...</div>
+                                <div>Game loading...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Game Progress</h3>
+                        <div class="progress-container">
+                            <div class="progress-item">
+                                <span>Artifacts Delivered</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="artifact-progress" style="width: 0%"></div>
+                                </div>
+                                <span id="artifact-count">0/10</span>
+                            </div>
+                            <div class="progress-item">
+                                <span>Flights Used</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill flights" id="flight-progress" style="width: 0%"></div>
+                                </div>
+                                <span id="flight-count">0/20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Screens -->
+    <div id="win-screen" class="screen">
+        <div class="end-container">
+            <div class="end-content success">
+                <i class="fas fa-trophy"></i>
+                <h1>Congratulations!</h1>
+                <h2>You've Delivered All Artifacts!</h2>
+                <div class="score-breakdown" id="win-score-breakdown">
+                    <!-- Score breakdown will be loaded here -->
+                </div>
+                <button onclick="location.reload()" class="btn-primary">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="lose-screen" class="screen">
+        <div class="end-container">
+            <div class="end-content error">
+                <i class="fas fa-times-circle"></i>
+                <h1>Game Over</h1>
+                <h2>You've used all 20 flights!</h2>
+                <p>You delivered <span id="final-artifacts">0</span> out of 10 artifacts.</p>
+                <div class="score-breakdown" id="lose-score-breakdown">
+                    <!-- Score breakdown will be loaded here -->
+                </div>
+                <button onclick="location.reload()" class="btn-primary">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Windows -->
+    <div class="modal-overlay" id="shop-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-store"></i> Traveler's Shop</h2>
+                <button class="close-modal" onclick="closeModal('shop-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="shop-categories">
+                <button class="category-btn active" onclick="showShopCategory('fuel')">Fuel</button>
+                <button class="category-btn" onclick="showShopCategory('upgrade')">Upgrades</button>
+                <button class="category-btn" onclick="showShopCategory('lootbox')">Lootboxes</button>
+            </div>
+            <div class="shop-items" id="shop-items-container">
+                <!-- Shop items will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="status-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-chart-bar"></i> Player Status</h2>
+                <button class="close-modal" onclick="closeModal('status-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="status-grid" id="status-grid">
+                <!-- Status will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="artifacts-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-gem"></i> Artifacts Collection</h2>
+                <button class="close-modal" onclick="closeModal('artifacts-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="artifacts-grid" id="artifacts-grid">
+                <!-- Artifacts will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Popup -->
+    <div class="event-popup" id="event-popup">
+        <div class="event-content">
+            <h4 id="event-title">Event Title</h4>
+            <p id="event-message">Event message will appear here</p>
+            <div class="event-effects" id="event-effects"></div>
+            <button class="close-event" onclick="closeEventPopup()">OK</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    
+</body>
+</html>
